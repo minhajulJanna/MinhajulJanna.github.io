@@ -11,7 +11,7 @@ const ASSETS_TO_CACHE = [
   '/style.css',
   '/script.js',
   '/manifest.json',
-  '/assets/minhajul-janna-logo.svg',
+  '/assets/minhajul janna logo.svg',
   '/assets/favicon.ico',
   // Add more assets as needed
 ];

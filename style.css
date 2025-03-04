@@ -20,6 +20,7 @@
     --font-en: 'Raleway', sans-serif;
     --font-ml: 'Manjari', sans-serif;
     --font-ar: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --cursor-size: 20px;
 }
 
 /* Reset and global styles */
@@ -29,8 +30,44 @@
     box-sizing: border-box;
 }
 
+/* Custom cursor */
+.custom-cursor {
+    position: fixed;
+    width: var(--cursor-size);
+    height: var(--cursor-size);
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    z-index: 9999;
+    transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease;
+}
+
+.dark-theme .custom-cursor {
+    border-color: var(--primary-light);
+}
+
+.custom-cursor.hover {
+    transform: translate(-50%, -50%) scale(1.5);
+    background-color: rgba(30, 104, 62, 0.1);
+}
+
+.dark-theme .custom-cursor.hover {
+    background-color: rgba(95, 166, 127, 0.1);
+}
+
+.custom-cursor.click {
+    transform: translate(-50%, -50%) scale(0.9);
+    background-color: rgba(30, 104, 62, 0.2);
+}
+
+.dark-theme .custom-cursor.click {
+    background-color: rgba(95, 166, 127, 0.2);
+}
+
 html {
     scroll-behavior: smooth;
+    cursor: none;
 }
 
 body {
@@ -118,11 +155,16 @@ header {
     position: sticky;
     top: 0;
     z-index: 100;
+    transition: transform 0.3s ease;
 }
 
 .dark-theme header {
     background-color: var(--bg-dark);
     box-shadow: var(--shadow-dark);
+}
+
+header.hide {
+    transform: translateY(-100%);
 }
 
 .logo-container {
@@ -201,16 +243,23 @@ header {
 
 .floating-nav a {
     color: var(--text-light);
-    padding: 0.5rem 1rem;
+    padding: 0.5rem;
     border-radius: 20px;
     font-weight: 500;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .floating-nav a:hover,
 .floating-nav a.active {
     background-color: var(--primary-dark);
     text-decoration: none;
+}
+
+.nav-icon {
+    width: 24px;
+    height: 24px;
 }
 
 /* Main content area */
@@ -374,6 +423,74 @@ footer {
 
 .contact-info p {
     margin-bottom: 0.5rem;
+}
+
+.contact-info a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+}
+
+/* Mudarris section styles */
+.mudarris-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.mudarris-photo {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 1rem;
+    border: 3px solid var(--primary-color);
+}
+
+.dark-theme .mudarris-photo {
+    border-color: var(--primary-light);
+}
+
+.mudarris-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.dark-theme .mudarris-name {
+    color: var(--primary-light);
+}
+
+.mudarris-position {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    opacity: 0.8;
+}
+
+.dark-theme .mudarris-position {
+    color: var(--text-light);
+}
+
+/* Location links */
+.location-links a {
+    display: inline-block;
+    margin-right: 0.5rem;
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.dark-theme .location-links a {
+    color: var(--primary-light);
+}
+
+.location-links a:hover {
+    text-decoration: underline;
 }
 
 .social-links {
@@ -1064,7 +1181,7 @@ footer {
     }
 
     .floating-nav a {
-        padding: 0.3rem 0.7rem;
+        padding: 0.3rem;
         font-size: 0.9rem;
     }
 

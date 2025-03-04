@@ -4,10 +4,14 @@ const languageSelect = document.getElementById('language-select');
 const installPrompt = document.getElementById('install-app');
 const installButton = document.getElementById('install-button');
 const dismissButton = document.getElementById('dismiss-button');
+const header = document.querySelector('header');
+
+// Custom cursor elements
+let cursor;
 
 // Theme toggling functionality
 function initThemeToggle() {
-    const currentTheme = localStorage.getItem('theme') || 'light';
+    const currentTheme = localStorage.getItem('theme') || 'dark'; // Default to dark theme
     document.body.classList.toggle('dark-theme', currentTheme === 'dark');
     document.body.classList.toggle('light-theme', currentTheme === 'light');
 
@@ -21,7 +25,7 @@ function initThemeToggle() {
 
 // Language switching functionality
 function initLanguageSelect() {
-    const currentLang = localStorage.getItem('language') || 'en';
+    const currentLang = localStorage.getItem('language') || 'ml'; // Default to Malayalam
     document.body.className = document.body.className.replace(/\b(en|ml|ar)\b/g, '') + ' ' + currentLang;
     languageSelect.value = currentLang;
 
@@ -29,6 +33,58 @@ function initLanguageSelect() {
         const selectedLang = languageSelect.value;
         document.body.className = document.body.className.replace(/\b(en|ml|ar)\b/g, '') + ' ' + selectedLang;
         localStorage.setItem('language', selectedLang);
+    });
+}
+
+// Hide header on scroll down, show on scroll up
+function initScrollHeader() {
+    let lastScrollTop = 0;
+    
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (scrollTop > lastScrollTop && scrollTop > 100) {
+            // Scrolling down & past the header
+            header.classList.add('hide');
+        } else {
+            // Scrolling up or at the top
+            header.classList.remove('hide');
+        }
+        
+        lastScrollTop = scrollTop;
+    });
+}
+
+// Custom cursor functionality
+function initCustomCursor() {
+    // Create cursor element
+    cursor = document.createElement('div');
+    cursor.classList.add('custom-cursor');
+    document.body.appendChild(cursor);
+    
+    // Update cursor position
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+    });
+    
+    // Add hover effect to interactive elements
+    const interactiveElements = document.querySelectorAll('a, button, select, input, .video-thumbnail');
+    interactiveElements.forEach(el => {
+        el.addEventListener('mouseenter', () => {
+            cursor.classList.add('hover');
+        });
+        el.addEventListener('mouseleave', () => {
+            cursor.classList.remove('hover');
+        });
+    });
+    
+    // Add click effect
+    document.addEventListener('mousedown', () => {
+        cursor.classList.add('click');
+    });
+    document.addEventListener('mouseup', () => {
+        cursor.classList.remove('click');
     });
 }
 
@@ -79,6 +135,14 @@ document.addEventListener('DOMContentLoaded', () => {
     if (languageSelect) {
         initLanguageSelect();
     }
+    
+    // Initialize scroll header
+    if (header) {
+        initScrollHeader();
+    }
+    
+    // Initialize custom cursor
+    initCustomCursor();
 
     // Category filtering for videos page
     const categoryButtons = document.querySelectorAll('.category-btn');
